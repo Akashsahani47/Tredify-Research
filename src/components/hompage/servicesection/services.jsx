@@ -173,7 +173,7 @@ const Services = () => {
               </div>
 
               {/* Action Button */}
-              <button onClick={() => router.push("https://tradeboxlive.com")} className="w-full bg-gradient-to-r from-gray-700 to-gray-900 hover:from-gray-800 hover:to-gray-950 text-white font-bold py-3 rounded-lg transition-all duration-300 transform hover:scale-105 group-hover:shadow-lg">
+              <button className="w-full bg-gradient-to-r from-gray-700 to-gray-900 hover:from-gray-800 hover:to-gray-950 text-white font-bold py-3 rounded-lg transition-all duration-300 transform hover:scale-105 group-hover:shadow-lg">
                 Select Plan
               </button>
             </div>
