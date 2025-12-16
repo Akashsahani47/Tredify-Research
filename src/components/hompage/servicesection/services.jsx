@@ -78,38 +78,8 @@ const Services = () => {
       color: "from-blue-600 to-green-600",
       popular: false
     },
-    {
-      icon: <Crown className="w-6 h-6" />,
-      title: "HNI Elite Advisory",
-      price: "₹1,00,000 to ₹1,50,000 / Year",
-      portfolio: "₹15 lakh – ₹2 crore",
-      bestFor: "High Net Worth Individuals",
-      features: [
-        "Custom portfolio strategy",
-        "Comprehensive wealth planning",
-        "Detailed research reports",
-        "Quarterly performance reviews",
-        "VIP priority support"
-      ],
-      color: "from-purple-500 to-blue-600",
-      popular: false
-    },
-    {
-      icon: <Gem className="w-6 h-6" />,
-      title: "Ultra HNI Bespoke Advisory",
-      price: "₹2,50,000+ / Year",
-      portfolio: "₹2 crore+ portfolios",
-      bestFor: "Ultra High Net Worth Investors",
-      features: [
-        "Custom wealth roadmap",
-        "Quant + Fundamental analysis",
-        "Weekly portfolio tracking",
-        "Macro + FII insights",
-        "Dedicated analyst team support"
-      ],
-      color: "from-orange-500 to-red-500",
-      popular: false
-    }
+    
+    
   ];
 
   const features = [
@@ -203,7 +173,7 @@ const Services = () => {
               </div>
 
               {/* Action Button */}
-              <button className="w-full bg-gradient-to-r from-gray-700 to-gray-900 hover:from-gray-800 hover:to-gray-950 text-white font-bold py-3 rounded-lg transition-all duration-300 transform hover:scale-105 group-hover:shadow-lg">
+              <button onClick={() => router.push("https://tradeboxlive.com")} className="w-full bg-gradient-to-r from-gray-700 to-gray-900 hover:from-gray-800 hover:to-gray-950 text-white font-bold py-3 rounded-lg transition-all duration-300 transform hover:scale-105 group-hover:shadow-lg">
                 Select Plan
               </button>
             </div>
@@ -211,123 +181,9 @@ const Services = () => {
         </div>
 
         {/* Features & Compliance */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-          {/* Features */}
-          <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 border border-gray-200">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-blue-500 rounded-lg flex items-center justify-center">
-                <Award className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900">Why Choose TREDIFY</h2>
-                <p className="text-gray-600">Professional research analysis</p>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {features.map((feature, index) => (
-                <div key={index} className="flex items-center gap-3 p-3 hover:bg-blue-50 rounded-lg transition-colors">
-                  <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                  </div>
-                  <span className="font-medium text-gray-800">{feature}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* SEBI Compliance */}
-          <div className="bg-gradient-to-br from-blue-600 to-green-600 rounded-2xl p-6 sm:p-8 text-white">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
-                <Shield className="w-6 h-6" />
-              </div>
-              <div>
-                <h2 className="text-2xl font-bold">SEBI Compliance</h2>
-                <p className="text-blue-100/90">Regulatory transparency</p>
-              </div>
-            </div>
-            
-            <div className="space-y-4">
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                <div className="flex items-center gap-3">
-                  <XCircle className="w-5 h-5 text-red-300" />
-                  <span className="font-bold">No guaranteed returns</span>
-                </div>
-                <p className="text-blue-100/90 text-sm mt-1">Investment markets carry inherent risks</p>
-              </div>
-              
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                <div className="flex items-center gap-3">
-                  <XCircle className="w-5 h-5 text-red-300" />
-                  <span className="font-bold">No profit-sharing</span>
-                </div>
-                <p className="text-blue-100/90 text-sm mt-1">Transparent fee structure only</p>
-              </div>
-              
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                <div className="flex items-center gap-3">
-                  <FileText className="w-5 h-5 text-green-300" />
-                  <span className="font-bold">All communication recorded & transparent</span>
-                </div>
-                <p className="text-blue-100/90 text-sm mt-1">Maintaining professional standards</p>
-              </div>
-            </div>
-            
-            <div className="mt-6 pt-6 border-t border-blue-400/30">
-              <p className="text-sm text-blue-100/90">
-                Registered under SEBI (Research Analysts) Regulations, 2014
-              </p>
-            </div>
-          </div>
-        </div>
-
+        
         {/* Contact CTA */}
-        <div className="bg-white rounded-3xl shadow-2xl p-8 border border-gray-200">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
-              Ready to Start Your Investment Journey?
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Contact us for a personalized consultation and choose the right plan for your investment goals.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
-            <a 
-              href="mailto:Aayushtak116@gmail.com"
-              className="group bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 rounded-xl p-5 text-center hover:shadow-lg transition-all duration-300"
-            >
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-green-500 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
-                <Mail className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="font-bold text-gray-900 mb-1">Email Us</h3>
-              <p className="text-gray-600 text-sm">Aayushtak116@gmail.com</p>
-            </a>
-            
-            <a 
-              href="tel:+918770588941"
-              className="group bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-xl p-5 text-center hover:shadow-lg transition-all duration-300"
-            >
-              <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-blue-500 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
-                <Phone className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="font-bold text-gray-900 mb-1">Call Us</h3>
-              <p className="text-gray-600 text-sm">+91 8770588941</p>
-            </a>
-            
-            <button 
-              onClick={() => router.push('/contact')}
-              className="group bg-gradient-to-r from-blue-500 to-green-500 text-white rounded-xl p-5 text-center hover:shadow-lg transition-all duration-300"
-            >
-              <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
-                <MessageCircle className="w-6 h-6" />
-              </div>
-              <h3 className="font-bold mb-1">Get Consultation</h3>
-              <p className="text-blue-100/90 text-sm">Schedule a meeting</p>
-            </button>
-          </div>
-        </div>
+       
       </div>
     </section>
   );
