@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from "next/navigation"
 import Link from 'next/link';
 import Image from 'next/image';
@@ -8,7 +8,29 @@ import { FiMenu, FiX } from 'react-icons/fi';
 const Navbar = () => {
   const [activeLink, setActiveLink] = useState('HOME');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const router = useRouter();
+
+  // Handle scroll effect for navbar
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (isMobileMenuOpen && !e.target.closest('.mobile-menu-panel')) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+    
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [isMobileMenuOpen]);
 
   const announcements = [
     "🚀 New Workshop Available: Advanced Technical Research Methods",
@@ -32,58 +54,65 @@ const Navbar = () => {
 
   const handleNavClick = (itemname) => {
     setActiveLink(itemname);
+    setIsMobileMenuOpen(false);
   };
 
   return (
     <>
-      {/* Announcement Bar */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-green-600 py-2">
-        <div className="flex animate-marquee">
+      {/* Announcement Bar - Fixed at top */}
+      <div className="w-full bg-gradient-to-r from-blue-600 to-green-600 py-2 overflow-hidden relative">
+        <div className="flex animate-marquee whitespace-nowrap">
           {announcements.map((announcement, index) => (
-            <div key={index} className="flex items-center mx-8">
-              <span className="text-sm font-medium text-white whitespace-nowrap">
-                {announcement}
-              </span>
-              {index < announcements.length - 1 && (
-                <div className="w-1 h-1 bg-white/50 rounded-full mx-8"></div>
-              )}
-            </div>
+            <span key={index} className="mx-6 text-sm text-white font-medium">
+              {announcement}
+              {index < announcements.length - 1 && ' • '}
+            </span>
           ))}
         </div>
-        {/* Gradient fade effects */}
-        <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-blue-600 to-transparent"></div>
-        <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-green-600 to-transparent"></div>
+        {/* Gradient overlays for edges */}
+        <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-blue-600 to-transparent pointer-events-none"></div>
+        <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-green-600 to-transparent pointer-events-none"></div>
       </div>
 
-      {/* Main Navbar */}
-      <nav className="sticky top-0 z-50 max-h-20 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm">
+      {/* Main Navbar - Fixed below announcement */}
+      <nav className={`sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm transition-all duration-300 ${
+        isScrolled ? 'py-1' : 'py-2'
+      }`}>
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between ">
+          <div className="flex items-center justify-between">
             {/* Logo and Brand */}
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-3">
               <div 
                 onClick={() => router.push('/')} 
-                className="group cursor-pointer"
+                className="cursor-pointer flex-shrink-0"
               >
-                <div className=" w-21 h-21 flex items-center justify-center rounded-xl  ">
-                  <div className=" inset-0 rounded-xl "></div>
-                  <Image 
-                    src={"/uplogo.png"}
-                    width={90}
-                    height={90}
-                    alt="Logo"
-                    className=" z-10 object-contain"
-                  />
-                </div>
+                <Image 
+                  src={"/uplogo.png"}
+                  width={60}
+                  height={60}
+                  alt="Logo"
+                  className="object-contain w-12 h-12 sm:w-14 sm:h-14"
+                  priority
+                />
               </div>
               
-              <div className="hidden md:block h-12 w-px bg-gradient-to-b from-gray-300 via-gray-400 to-gray-300"></div>
+              <div className="hidden sm:block h-10 w-px bg-gradient-to-b from-gray-300 via-gray-400 to-gray-300"></div>
               
-              <div className="hidden md:block">
-                <h1 className="text-lg font-bold bg-gradient-to-r from-green-700 to-blue-700 bg-clip-text text-transparent">
+              <div className="hidden sm:block">
+                <h1 className="text-sm md:text-base font-bold bg-gradient-to-r from-green-700 to-blue-700 bg-clip-text text-transparent leading-tight">
                   Tredify Research & Finance PVT LTD
                 </h1>
-                <h2 className="text-sm font-semibold text-blue-700 tracking-wider mt-0.5">
+                <h2 className="text-xs md:text-sm text-blue-700 font-semibold tracking-wider mt-0.5">
+                  INH000023791
+                </h2>
+              </div>
+
+              {/* Mobile Brand Name */}
+              <div className="sm:hidden">
+                <h1 className="text-xs font-bold bg-gradient-to-r from-green-700 to-blue-700 bg-clip-text text-transparent">
+                  Tredify Research
+                </h1>
+                <h2 className="text-[10px] text-blue-700 font-semibold tracking-wider">
                   INH000023791
                 </h2>
               </div>
@@ -95,7 +124,7 @@ const Navbar = () => {
                 <div key={item.name} className="relative">
                   <Link 
                     href={item.href}
-                    className={`relative px-4 py-2.5 rounded-lg transition-all duration-300 ${
+                    className={`relative px-4 py-2 rounded-lg transition-all duration-300 ${
                       activeLink === item.name 
                         ? 'text-white'
                         : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
@@ -117,10 +146,10 @@ const Navbar = () => {
             </div>
 
             {/* Mobile Menu Button */}
-            <div className='lg:hidden flex items-center'>
+            <div className='lg:hidden'>
               <button
                 onClick={toggleMobileMenu}
-                className='p-2.5 rounded-lg bg-gradient-to-r from-blue-50 to-green-50 hover:from-blue-100 hover:to-green-100 transition-all duration-300'
+                className='p-2 rounded-lg bg-gradient-to-r from-blue-50 to-green-50 hover:from-blue-100 hover:to-green-100 transition-all duration-300'
                 aria-label='Toggle menu'
               >
                 {isMobileMenuOpen ? (
@@ -134,18 +163,18 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Mobile Navigation Menu */}
-      <div className={`lg:hidden fixed inset-0 z-40 transition-all duration-300 ${
+      {/* Mobile Navigation Menu - Fixed overlay */}
+      <div className={`lg:hidden fixed inset-0 z-50 transition-all duration-300 ${
         isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
       }`}>
-        {/* Backdrop */}
+        {/* Backdrop - Closes menu when clicked */}
         <div 
           className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-          onClick={toggleMobileMenu}
+          onClick={() => setIsMobileMenuOpen(false)}
         ></div>
         
-        {/* Menu Panel */}
-        <div className={`absolute top-0 right-0 h-full w-80 max-w-full bg-white shadow-2xl transform transition-transform duration-300 ${
+        {/* Menu Panel - Slides from right */}
+        <div className={`mobile-menu-panel absolute top-0 right-0 h-full w-80 max-w-full bg-white shadow-2xl transform transition-transform duration-300 ${
           isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}>
           <div className="h-full overflow-y-auto">
@@ -154,7 +183,7 @@ const Navbar = () => {
               <div className="flex items-center space-x-3">
                 <div className="w-12 h-12 flex items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-green-600">
                   <Image 
-                    src={"/INlogo2.png"}
+                    src={"/uplogo.png"}
                     width={32}
                     height={32}
                     alt="Logo"
@@ -174,19 +203,39 @@ const Navbar = () => {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`block mb-1 px-4 py-3.5 rounded-lg transition-all duration-200 ${
+                  className={`block mb-2 px-4 py-3 rounded-lg transition-all duration-200 ${
                     activeLink === item.name
-                      ? 'bg-gradient-to-r from-blue-600 to-green-600 text-white shadow-lg transform scale-[1.02]'
+                      ? 'bg-gradient-to-r from-blue-600 to-green-600 text-white shadow-lg'
                       : 'text-gray-700 hover:bg-gray-50'
                   }`}
-                  onClick={() => {
-                    handleNavClick(item.name);
-                    toggleMobileMenu();
-                  }}
+                  onClick={() => handleNavClick(item.name)}
                 >
                   <span className="font-medium">{item.name}</span>
                 </Link>
               ))}
+            </div>
+
+            {/* Contact Info */}
+            <div className="mt-8 px-4">
+              <div className="bg-gradient-to-r from-blue-50 to-green-50 rounded-xl p-4">
+                <h3 className="font-bold text-gray-800 text-sm mb-3">Contact Info</h3>
+                <div className="space-y-2">
+                  <a 
+                    href="mailto:Aayushtak116@gmail.com" 
+                    className="flex items-center gap-2 text-blue-600 text-xs hover:text-blue-700"
+                  >
+                    <span>📧</span>
+                    <span className="truncate">Aayushtak116@gmail.com</span>
+                  </a>
+                  <a 
+                    href="tel:+918770588941" 
+                    className="flex items-center gap-2 text-green-600 text-xs hover:text-green-700"
+                  >
+                    <span>📞</span>
+                    <span>+91 8770588941</span>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -204,6 +253,11 @@ const Navbar = () => {
         
         .animate-marquee:hover {
           animation-play-state: paused;
+        }
+
+        /* Prevent body scroll when mobile menu is open */
+        body:has(.lg\\:hidden.fixed.inset-0.z-50.opacity-100) {
+          overflow: hidden;
         }
       `}</style>
     </>
